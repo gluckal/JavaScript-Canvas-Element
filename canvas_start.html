@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Drawing Area</title>
+<!-- You can add your style here rather than in an external style sheet. -->
+<style>
+canvas {
+	border:5px solid #d3d3d3;
+    background-color: #f1f1f1;
+    display: block;
+}
+</style>
+</head>
+<body>
+    <!-- DO NOT MODIFY THIS HTML -->
+    <canvas id = "myCanvas" width = "350" height = "500"  ></canvas>
+    <input type = "color" id = "picker"/>
+</body>
+
+<script>
+	var canvas = document.querySelector("#myCanvas");
+	canvas.height = window.innerHeight*0.8;
+	canvas.width = window.innerWidth*0.8;
+
+	var ctx = canvas.getContext("2d");
+
+	var color = "pink";
+
+	ctx.fillStyle = color;
+
+	var drawing = true;
+
+	function draw(actualX, actualY) {
+		console.log("drawing");
+		if (drawing == true){
+			ctx.beginPath();
+			ctx.arc(actualX , actualY , 30, 0, 2*Math.PI);
+			// last 2 numbers- starting and end angle.
+			ctx.fill();
+		}
+	}
+
+	function pen(e) {
+		if (e.key == "r") {
+			console.log("using red");
+			ctx.fillStyle = "red";
+		}
+		if (e.key == "g") {
+			console.log("using green");
+			ctx.fillStyle = "green";
+		}
+		if (e.key == "y") {
+			console.log("yellow");
+			ctx.fillStyle = "yellow";
+		}
+		if (e.key == "b") {
+			console.log("using blue");
+			ctx.fillStyle = "blue";
+		}
+		if (e.keyCode == 32) {
+			console.log("clear canvas");
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+		}
+		if (e.keyCode == 38) {
+			console.log("key up");
+			drawing = false;
+		}
+		if (e.keyCode == 40) {
+			console.log("key down");
+			drawing = true;
+		}
+	}
+
+	canvas.addEventListener("mousemove", function (e){
+		console.log(e.y);
+		draw(e.x , e.y);
+	})
+
+
+	window.addEventListener("keydown", function (e){
+		console.log(e.key);
+		pen(e);
+	})
+
+	var color_picker = document.querySelector("#picker");
+	color_picker.addEventListener("input", function (){
+		console.log(this.value);
+		change();
+	})
+
+	function change() {
+		ctx.fillStyle = color_picker.value;
+	}
+
+</script>
+
+</html>
